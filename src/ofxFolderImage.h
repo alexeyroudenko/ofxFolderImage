@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-class ofxFolderImage {
+class ofxFolderImage: public ofImage {
     
 public:
     ofEvent<string> onPhotoLoad;
@@ -26,6 +26,7 @@ public:
     void loadByFilemame(string fileName) {
         ofLogVerbose("ofxFolderImage", "loadByFilemame: " + fileName);
         image.load(dir.getAbsolutePath() + "/" + fileName);
+        ofImage::load(dir.getAbsolutePath() + "/" + fileName);
         ofNotifyEvent(onPhotoLoad, fileName);
         loadedFileName = fileName;
         // TODO: set index
@@ -41,8 +42,10 @@ public:
         if (dir.size() != 0) {
             string fileName = dir.getPath(current);
             ofFile file(fileName);
-            ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + file.getAbsolutePath());
+            string filePath = file.getAbsolutePath();
+            ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + filePath);
             image.load(fileName);
+            ofImage::load(fileName);
             loadedFileName = fileName;
             ofNotifyEvent(onPhotoLoad, fileName);
         } else {
@@ -67,8 +70,9 @@ public:
         
         string fileName = dir.getPath(current);
         ofFile file(fileName);
-        ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + file.getAbsolutePath());
-        image.load(fileName);
+        string filePath = file.getAbsolutePath();
+        ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + filePath);
+        ofImage::load(fileName);
         loadedFileName = fileName;
         ofNotifyEvent(onPhotoLoad, fileName);
     }
@@ -83,8 +87,9 @@ public:
 
         string fileName = dir.getPath(current);
         ofFile file(fileName);
-        ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + file.getAbsolutePath());
-        image.load(fileName);
+        string filePath = file.getAbsolutePath();
+        ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + filePath);
+        ofImage::load(fileName);
         loadedFileName = fileName;
         ofNotifyEvent(onPhotoLoad, fileName);
     }
@@ -99,11 +104,11 @@ public:
     void loadState() {
         ofBuffer buffer = ofBufferFromFile("settings/" + name);
         current = ofToInt(buffer.getText());
-        ofLogVerbose("ofxFolderImage", "loadState "  + ofToString(current) + " folder:" + folder + " name:" + name);
+        ofLogVerbose("ofxFolderImage", "loadState "  + ofToString(current) + " at:" + folder + " name:" + name);
     }
     
     void saveState() {
-        ofLogVerbose("ofxFolderImage", "saveState:" + ofToString(current) + " fileName:" + getFileName() +  " folder:" + folder + " name:" + name);
+        ofLogVerbose("ofxFolderImage", "saveState:" + ofToString(current) + " name:" + getFileName() +  " at:" + folder + " name:" + name);
         ofFile file(ofToDataPath("settings/" + name), ofFile::WriteOnly);
         file << ofToString(current);
         file.close();

@@ -9,7 +9,6 @@ public:
     
     int current;
     string loadedFileName = "";
-    ofImage image;
     
     //--------------------------------------------------------------
     void setup(string folder_, string name_ = ""){
@@ -21,11 +20,13 @@ public:
             loadState();
             loadAt(current);
         }
+        
+        this->getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
     }
     
     void loadByFilemame(string fileName) {
         ofLogVerbose("ofxFolderImage", "loadByFilemame: " + fileName);
-        image.load(dir.getAbsolutePath() + "/" + fileName);
+        //image.load(dir.getAbsolutePath() + "/" + fileName);
         ofImage::load(dir.getAbsolutePath() + "/" + fileName);
         ofNotifyEvent(onPhotoLoad, fileName);
         loadedFileName = fileName;
@@ -44,16 +45,17 @@ public:
             ofFile file(fileName);
             string filePath = file.getAbsolutePath();
             ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + filePath);
-            image.load(fileName);
+            //image.load(fileName);
             ofImage::load(fileName);
             loadedFileName = fileName;
             ofNotifyEvent(onPhotoLoad, fileName);
         } else {
             ofLogVerbose("ofxFolderImage", "create empty for: " + dir.getAbsolutePath());
             loadedFileName = "";
-            image = ofImage();
+            //image = ofImage();
             ofNotifyEvent(onPhotoLoad, loadedFileName);
         }
+        this->getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
     }
     
     int getCurrent() {
@@ -74,6 +76,7 @@ public:
         ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + filePath);
         ofImage::load(fileName);
         loadedFileName = fileName;
+        this->getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
         ofNotifyEvent(onPhotoLoad, fileName);
     }
     
@@ -91,6 +94,7 @@ public:
         ofLogVerbose("ofxFolderImage", "load at "  + ofToString(current) + " " + filePath);
         ofImage::load(fileName);
         loadedFileName = fileName;
+        this->getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
         ofNotifyEvent(onPhotoLoad, fileName);
     }
     
